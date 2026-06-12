@@ -1,8 +1,10 @@
-import { updateSession } from "@/utils/supabase/middleware"
+import { createClient } from "@/utils/supabase/middleware"
 import type { NextRequest } from "next/server"
 
 export async function proxy(request: NextRequest) {
-  return await updateSession(request)
+  const { supabase, response } = createClient(request)
+  await supabase.auth.getUser()
+  return response
 }
 
 export const config = {

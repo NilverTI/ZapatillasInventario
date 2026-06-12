@@ -6,6 +6,7 @@ import { logActivity } from "@/lib/activity"
 import { requireAdmin, requireAuth } from "@/lib/auth-utils"
 import { getAdminClient } from "@/lib/supabase-admin"
 import { createClient } from "@/utils/supabase/server"
+import { cookies } from "next/headers"
 import { z } from "zod"
 
 const userSchema = z.object({
@@ -138,7 +139,8 @@ export async function deleteUser(id: string) {
 
 export async function changePassword(oldPassword: string, newPassword: string) {
   const session = await requireAuth()
-  const supabase = await createClient()
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
 
   const { error: signInError } = await supabase.auth.signInWithPassword({
     email: session.user.email,

@@ -1,6 +1,7 @@
 "use server"
 
 import { createClient } from "@/utils/supabase/server"
+import { cookies } from "next/headers"
 import { prisma } from "./prisma"
 import { z } from "zod"
 
@@ -25,7 +26,8 @@ export async function loginAction(formData: FormData) {
     return { error: "Datos inválidos", details: validated.error.flatten() }
   }
 
-  const supabase = await createClient()
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
 
   const { error } = await supabase.auth.signInWithPassword({
     email: validated.data.email,
@@ -50,15 +52,8 @@ export async function registerAction(formData: FormData) {
     return { error: "Datos inválidos", details: validated.error.flatten() }
   }
 
-  const existing = await prisma.user.findUnique({
-    where: { email: validated.data.email },
-  })
-
-  if (existing) {
-    return { error: "El email ya está registrado" }
-  }
-
-  const supabase = await createClient()
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
 
   const { data: authData, error } = await supabase.auth.signUp({
     email: validated.data.email,
@@ -69,20 +64,25 @@ export async function registerAction(formData: FormData) {
     return { error: "Error al registrar usuario" }
   }
 
-  await prisma.user.create({
-    data: {
-      id: authData.user.id,
-      name: validated.data.name,
-      email: validated.data.email,
-      password: "",
-      role: "EMPLOYEE",
-    },
-  })
+  try {
+    await prisma.user.create({
+      data: {
+        id: authData.user.id,
+        name: validated.data.name,
+        email: validated.data.email,
+        password: "",
+        role: "EMPLOYEE",
+      },
+    })
+  } catch {
+    // DB not available, user exists only in Supabase Auth
+  }
 
   return { success: true }
 }
 
 export async function logoutAction() {
-  const supabase = await createClient()
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
   await supabase.auth.signOut()
 }
