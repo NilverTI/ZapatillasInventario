@@ -1,0 +1,50 @@
+import { createClient } from "@/utils/supabase/server"
+import { prisma } from "./prisma"
+
+export interface Session {
+  user: {
+    id: string
+    name: string
+    email: string
+    role: string
+    image: string | null
+  }
+}
+
+export async function auth(): Promise<Session | null> {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user || !user.email) return null
+
+  let dbUser = await prisma.user.findUnique({
+    where: { id: user.id },
+    select: { id: true, name: true, email: true, role: true, image: true, active: true },
+  })
+
+  if (!dbUser) {
+    dbUser = await prisma.user.findUnique({
+      where: { email: user.email },
+      select: { id: true, name: true, email: true, role: true, image: true, active: true },
+    })
+
+    if (dbUser) {
+      await prisma.user.update({
+        where: { email: user.email },
+        data: { id: user.id },
+      })
+    }
+  }
+
+  if (!dbUser || !dbUser.active) return null
+
+  return {
+    user: {
+      id: dbUser.id,
+      name: dbUser.name,
+      email: dbUser.email,
+      role: dbUser.role,
+      image: dbUser.image ?? null,
+    },
+  }
+}

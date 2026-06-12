@@ -1,0 +1,287 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String?
+  role      Role     @default(EMPLOYEE)
+  image     String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  orders       Order[]
+  payments     Payment[]
+  expenses     Expense[]
+  activities   ActivityLog[]
+  orderHistory OrderHistory[]
+
+  @@index([email])
+  @@map("users")
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
+}
+
+model Client {
+  id          String   @id @default(cuid())
+  fullName    String   @map("full_name")
+  dni         String?
+  phone       String
+  whatsapp    String?
+  address     String?
+  city        String?
+  country     String?
+  email       String?
+  notes       String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  orders Order[]
+
+  @@index([fullName])
+  @@index([phone])
+  @@index([email])
+  @@map("clients")
+}
+
+model Order {
+  id                String        @id @default(cuid())
+  orderNumber       Int           @default(autoincrement()) @map("order_number")
+  quantity          Int           @default(1)
+  clientId          String        @map("client_id")
+  clientName        String        @map("client_name")
+  clientPhone       String        @map("client_phone")
+  model             String
+  brand             String
+  category          Category      @default(OTHER)
+  color             String?
+  size              String?
+  importCountry     String        @map("import_country")
+  supplier          String
+  supplierId        String?  @map("supplier_id")
+  importCost        Decimal       @map("import_cost")
+  salePrice         Decimal       @map("sale_price")
+  advancePayment    Decimal       @default(0) @map("advance_payment")
+  extraPayment      Decimal       @default(0) @map("extra_payment")
+  status            OrderStatus   @default(PENDING)
+  orderDate         DateTime      @default(now()) @map("order_date")
+  estimatedArrival  DateTime?     @map("estimated_arrival")
+  deliveryDate      DateTime?     @map("delivery_date")
+  notes             String?
+  createdBy         String        @map("created_by")
+  createdAt         DateTime      @default(now()) @map("created_at")
+  updatedAt         DateTime      @updatedAt @map("updated_at")
+
+  client      Client         @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  creator     User           @relation(fields: [createdBy], references: [id])
+  supplierRel Supplier?      @relation(fields: [supplierId], references: [id])
+  payments    Payment[]
+  attachments Attachment[]
+  history     OrderHistory[]
+  expenses    Expense[]
+
+  @@index([orderNumber])
+  @@index([clientId])
+  @@index([status])
+  @@index([model])
+  @@index([brand])
+  @@index([orderDate])
+  @@map("orders")
+}
+
+enum Category {
+  RUNNING
+  CASUAL
+  BASKETBALL
+  FOOTBALL
+  SKATE
+  OTHER
+}
+
+enum OrderStatus {
+  PENDING
+  PURCHASED
+  IN_TRANSIT
+  CUSTOMS
+  ARRIVED
+  READY_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+}
+
+model Payment {
+  id        String   @id @default(cuid())
+  orderId   String   @map("order_id")
+  amount    Decimal
+  type      PaymentType
+  method    PaymentMethod
+  reference String?
+  date      DateTime @default(now())
+  userId    String   @map("user_id")
+  notes     String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  order  Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  user   User  @relation(fields: [userId], references: [id])
+
+  @@index([orderId])
+  @@map("payments")
+}
+
+enum PaymentType {
+  ADVANCE
+  EXTRA
+  REMAINING
+  FULL
+}
+
+enum PaymentMethod {
+  CASH
+  TRANSFER
+  YAPE
+  PLIN
+  OTHER
+}
+
+model Attachment {
+  id        String   @id @default(cuid())
+  orderId   String   @map("order_id")
+  type      AttachmentType
+  filename  String
+  url       String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@map("attachments")
+}
+
+enum AttachmentType {
+  PHOTO
+  RECEIPT
+  OTHER
+}
+
+model OrderHistory {
+  id        String   @id @default(cuid())
+  orderId   String   @map("order_id")
+  status    OrderStatus
+  note      String?
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id])
+
+  @@index([orderId])
+  @@index([createdAt])
+  @@map("order_history")
+}
+
+model Supplier {
+  id         String   @id @default(cuid())
+  name       String
+  contact    String?
+  phone      String?
+  email      String?
+  country    String?
+  notes      String?
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  orders   Order[]
+  expenses Expense[]
+
+  @@index([name])
+  @@map("suppliers")
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  model       String   @map("model")
+  brand       String
+  category    Category @default(OTHER)
+  description String?
+  imageUrl    String?  @map("image_url")
+  importCost  Decimal? @map("import_cost")
+  salePrice   Decimal? @map("sale_price")
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  variants ProductVariant[]
+
+  @@index([model, brand])
+  @@map("products")
+}
+
+model ProductVariant {
+  id        String  @id @default(cuid())
+  productId String  @map("product_id")
+  size      String?
+  color     String?
+  stock     Int     @default(0)
+  price     Decimal?
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("product_variants")
+}
+
+model Expense {
+  id          String   @id @default(cuid())
+  description String
+  amount      Decimal
+  category    ExpenseCategory
+  date        DateTime @default(now())
+  supplierId  String?  @map("supplier_id")
+  orderId     String?  @map("order_id")
+  notes       String?
+  createdBy   String   @map("created_by")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  supplier Supplier? @relation(fields: [supplierId], references: [id])
+  order    Order?    @relation(fields: [orderId], references: [id])
+  creator  User      @relation(fields: [createdBy], references: [id])
+
+  @@index([date])
+  @@map("expenses")
+}
+
+enum ExpenseCategory {
+  SHIPPING
+  CUSTOMS
+  STORAGE
+  SUPPLIES
+  TRANSPORT
+  OTHER
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  action    String
+  entity    String
+  entityId  String?  @map("entity_id")
+  details   String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([createdAt])
+  @@index([userId])
+  @@map("activity_logs")
+}
