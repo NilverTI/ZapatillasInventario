@@ -122,11 +122,11 @@ export function ReportsContent({ summary }: Props) {
           <div className="flex gap-4 items-end flex-wrap">
             <div className="space-y-1">
               <Label className="text-xs">Fecha Desde</Label>
-              <Input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} className="h-9 w-40" />
+               <Input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} className="h-9 w-full sm:w-40" />
             </div>
             <div className="space-y-1">
               <Label className="text-xs">Fecha Hasta</Label>
-              <Input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} className="h-9 w-40" />
+              <Input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} className="h-9 w-full sm:w-40" />
             </div>
           </div>
           <div className="grid gap-4 md:grid-cols-4">

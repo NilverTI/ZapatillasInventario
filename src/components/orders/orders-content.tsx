@@ -126,7 +126,7 @@ export function OrdersContent({ orders: initialOrders }: Props) {
                 />
               </div>
             </div>
-            <div className="w-[180px]">
+            <div className="w-full sm:w-[180px]">
               <label className="text-xs font-medium text-muted-foreground mb-1 block">
                 Estado
               </label>

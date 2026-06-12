@@ -248,12 +248,12 @@ export function OrderDetail({ order }: Props) {
             </p>
           </div>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={copyTrackingLink}>
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" onClick={copyTrackingLink} size="sm">
             <Send className="h-4 w-4 mr-2" />
             Enlace Seguimiento
           </Button>
-          <Button variant="outline" onClick={() => setShowStatus(true)}>
+          <Button variant="outline" onClick={() => setShowStatus(true)} size="sm">
             <Truck className="h-4 w-4 mr-2" />
             Actualizar Estado
           </Button>
