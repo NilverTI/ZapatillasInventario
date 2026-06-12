@@ -284,6 +284,27 @@ export async function getAlerts() {
   return { delayedOrders, readyOrders }
 }
 
+export async function getDashboardStatsFallback(): Promise<Awaited<ReturnType<typeof getDashboardStats>>> {
+  return {
+    totalOrders: 0,
+    pendingOrders: 0,
+    deliveredOrders: 0,
+    monthSales: 0,
+    monthProfit: 0,
+    totalClients: 0,
+    alerts: { delayedOrders: [], readyOrders: [] },
+  } as Awaited<ReturnType<typeof getDashboardStats>>
+}
+
+export async function getChartDataFallback(): Promise<Awaited<ReturnType<typeof getChartData>>> {
+  return {
+    monthlySales: [],
+    monthlyProfit: [],
+    brandSales: [],
+    orderStatus: [],
+  } as unknown as Awaited<ReturnType<typeof getChartData>>
+}
+
 export async function getChartData() {
   const orders = await prisma.order.findMany({
     select: {
