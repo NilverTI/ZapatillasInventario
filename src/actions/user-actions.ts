@@ -102,12 +102,17 @@ export async function updateUser(id: string, formData: FormData) {
   }
 
   if (raw.password && typeof raw.password === "string" && raw.password.length > 0) {
-    const supabase = getAdminClient()
-    const { error: authError } = await supabase.auth.admin.updateUserById(id, {
-      password: raw.password,
-    })
-    if (authError) {
-      return { error: authError.message }
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)
+    if (isUuid) {
+      const supabase = getAdminClient()
+      const { error: authError } = await supabase.auth.admin.updateUserById(id, {
+        password: raw.password,
+      })
+      if (authError) {
+        return { error: authError.message }
+      }
+    } else {
+      return { error: "Este usuario de prueba no existe en Supabase Auth. Crea uno nuevo para habilitar esta opción." }
     }
   }
 
@@ -128,8 +133,15 @@ export async function deleteUser(id: string) {
     return { error: "No puedes eliminar el único administrador" }
   }
 
-  const supabase = getAdminClient()
-  await supabase.auth.admin.deleteUser(id)
+  try {
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)
+    if (isUuid) {
+      const supabase = getAdminClient()
+      await supabase.auth.admin.deleteUser(id)
+    }
+  } catch (error) {
+    console.error("Error al borrar usuario de Supabase Auth:", error)
+  }
 
   await prisma.user.update({ where: { id }, data: { active: false } })
   await logActivity("deactivate", "user", id, `Usuario ${user.name} desactivado`)

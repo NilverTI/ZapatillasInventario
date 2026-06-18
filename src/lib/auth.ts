@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server"
 import { cookies } from "next/headers"
 import { prisma } from "./prisma"
+import { cache } from "react"
 
 export interface Session {
   user: {
@@ -12,7 +13,7 @@ export interface Session {
   }
 }
 
-export async function auth(): Promise<Session | null> {
+export const auth = cache(async (): Promise<Session | null> => {
   const cookieStore = await cookies()
   const supabase = createClient(cookieStore)
   const { data: { user } } = await supabase.auth.getUser()
@@ -61,4 +62,5 @@ export async function auth(): Promise<Session | null> {
       },
     }
   }
-}
+})
+
