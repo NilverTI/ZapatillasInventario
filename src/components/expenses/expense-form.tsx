@@ -67,51 +67,64 @@ export function ExpenseForm() {
   }
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="space-y-6 max-w-3xl mx-auto w-full">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" asChild><Link href="/expenses"><ArrowLeft className="h-4 w-4" /></Link></Button>
-        <div><h1 className="text-2xl font-bold tracking-tight">Nuevo Gasto</h1></div>
+        <Button variant="ghost" size="icon" asChild>
+          <Link href="/expenses">
+            <ArrowLeft className="h-4 w-4" />
+          </Link>
+        </Button>
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Nuevo Gasto</h1>
+        </div>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Card>
-          <CardHeader><CardTitle>Registrar Gasto</CardTitle></CardHeader>
+        <Card className="border-muted-foreground/10 shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold">Registrar Gasto</CardTitle>
+          </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2 sm:col-span-2">
-                <Label htmlFor="description">Descripción *</Label>
-                <Input id="description" {...register("description")} />
+                <Label htmlFor="description" className="text-sm font-medium">Descripción *</Label>
+                <Input id="description" {...register("description")} className="border-muted-foreground/20 focus-visible:ring-primary" />
                 {errors.description && <p className="text-sm text-destructive">{errors.description.message}</p>}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="amount">Monto *</Label>
-                <Input id="amount" type="number" step="0.01" {...register("amount")} />
+                <Label htmlFor="amount" className="text-sm font-medium">Monto *</Label>
+                <Input id="amount" type="number" step="0.01" {...register("amount")} className="border-muted-foreground/20 focus-visible:ring-primary" />
                 {errors.amount && <p className="text-sm text-destructive">{errors.amount.message}</p>}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="category">Categoría</Label>
-                <Select id="category" options={CATEGORIES} {...register("category")} />
+                <Label htmlFor="category" className="text-sm font-medium">Categoría</Label>
+                <Select id="category" options={CATEGORIES} {...register("category")} className="border-muted-foreground/20 focus-visible:ring-primary" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="date">Fecha</Label>
-                <Input id="date" type="date" {...register("date")} />
+                <Label htmlFor="date" className="text-sm font-medium">Fecha</Label>
+                <Input id="date" type="date" {...register("date")} className="border-muted-foreground/20 focus-visible:ring-primary" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="supplierId">Proveedor</Label>
-                <select id="supplierId" {...register("supplierId")} className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm">
-                  <option value="">Seleccionar</option>
-                  {suppliers.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
-                </select>
+                <Label htmlFor="supplierId" className="text-sm font-medium">Proveedor</Label>
+                <Select
+                  id="supplierId"
+                  placeholder="Seleccionar"
+                  options={suppliers.map((s) => ({ value: s.id, label: s.name }))}
+                  {...register("supplierId")}
+                  className="border-muted-foreground/20 focus-visible:ring-primary"
+                />
               </div>
               <div className="space-y-2 sm:col-span-2">
-                <Label htmlFor="notes">Notas</Label>
-                <Input id="notes" {...register("notes")} />
+                <Label htmlFor="notes" className="text-sm font-medium">Notas</Label>
+                <Input id="notes" {...register("notes")} className="border-muted-foreground/20 focus-visible:ring-primary" />
               </div>
             </div>
           </CardContent>
         </Card>
         <div className="flex justify-end gap-2 mt-6">
           <Button variant="outline" asChild><Link href="/expenses">Cancelar</Link></Button>
-          <Button type="submit" disabled={isSubmitting}><Save className="h-4 w-4 mr-2" />{isSubmitting ? "Guardando..." : "Registrar"}</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            <Save className="h-4 w-4 mr-2" />{isSubmitting ? "Guardando..." : "Registrar"}
+          </Button>
         </div>
       </form>
     </div>

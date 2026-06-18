@@ -43,8 +43,8 @@ export function Sidebar() {
   return (
     <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 z-30">
       <div className="flex flex-col flex-1 min-h-0 border-r bg-card">
-        <div className="flex items-center h-16 px-6 border-b">
-          <Package className="h-6 w-6 text-primary mr-2" />
+        <div className="flex items-center h-16 px-6 border-b gap-2">
+          <img src="/img/Icono.webp" alt="Zapas Import Logo" className="h-8 w-8 object-contain rounded-md" />
           <span className="font-bold text-lg">Zapas Import</span>
         </div>
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">

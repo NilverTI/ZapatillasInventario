@@ -50,50 +50,62 @@ export function SupplierForm({ supplier }: Props) {
   }
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="space-y-6 max-w-3xl mx-auto w-full">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" asChild><Link href="/suppliers"><ArrowLeft className="h-4 w-4" /></Link></Button>
+        <Button variant="ghost" size="icon" asChild>
+          <Link href="/suppliers">
+            <ArrowLeft className="h-4 w-4" />
+          </Link>
+        </Button>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">{isEditing ? "Editar Proveedor" : "Nuevo Proveedor"}</h1>
-          <p className="text-muted-foreground">{isEditing ? "Actualiza los datos" : "Registra un nuevo proveedor"}</p>
+          <h1 className="text-2xl font-bold tracking-tight">
+            {isEditing ? "Editar Proveedor" : "Nuevo Proveedor"}
+          </h1>
+          <p className="text-muted-foreground">
+            {isEditing ? "Actualiza los datos del proveedor" : "Registra un nuevo proveedor"}
+          </p>
         </div>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Card>
-          <CardHeader><CardTitle>Información del Proveedor</CardTitle></CardHeader>
+        <Card className="border-muted-foreground/10 shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold">Información del Proveedor</CardTitle>
+          </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="name">Nombre *</Label>
-                <Input id="name" {...register("name")} />
+                <Label htmlFor="name" className="text-sm font-medium">Nombre *</Label>
+                <Input id="name" {...register("name")} className="border-muted-foreground/20 focus-visible:ring-primary" />
                 {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="contact">Contacto</Label>
-                <Input id="contact" {...register("contact")} />
+                <Label htmlFor="contact" className="text-sm font-medium">Contacto</Label>
+                <Input id="contact" {...register("contact")} className="border-muted-foreground/20 focus-visible:ring-primary" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="phone">Teléfono</Label>
-                <Input id="phone" {...register("phone")} />
+                <Label htmlFor="phone" className="text-sm font-medium">Teléfono</Label>
+                <Input id="phone" {...register("phone")} className="border-muted-foreground/20 focus-visible:ring-primary" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" {...register("email")} />
+                <Label htmlFor="email" className="text-sm font-medium">Email</Label>
+                <Input id="email" type="email" {...register("email")} className="border-muted-foreground/20 focus-visible:ring-primary" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="country">País</Label>
-                <Input id="country" {...register("country")} />
+                <Label htmlFor="country" className="text-sm font-medium">País</Label>
+                <Input id="country" {...register("country")} className="border-muted-foreground/20 focus-visible:ring-primary" />
               </div>
               <div className="space-y-2 sm:col-span-2">
-                <Label htmlFor="notes">Notas</Label>
-                <Input id="notes" {...register("notes")} />
+                <Label htmlFor="notes" className="text-sm font-medium">Notas</Label>
+                <Input id="notes" {...register("notes")} className="border-muted-foreground/20 focus-visible:ring-primary" />
               </div>
             </div>
           </CardContent>
         </Card>
         <div className="flex justify-end gap-2 mt-6">
           <Button variant="outline" asChild><Link href="/suppliers">Cancelar</Link></Button>
-          <Button type="submit" disabled={isSubmitting}><Save className="h-4 w-4 mr-2" />{isSubmitting ? "Guardando..." : "Guardar"}</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            <Save className="h-4 w-4 mr-2" />{isSubmitting ? "Guardando..." : "Guardar"}
+          </Button>
         </div>
       </form>
     </div>

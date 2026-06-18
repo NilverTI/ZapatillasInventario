@@ -127,7 +127,7 @@ export function DashboardContent({ stats, chartData }: DashboardContentProps) {
       ) : null}
 
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-        <Card>
+        <Card className="border-muted-foreground/10 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Pedidos Totales</CardTitle>
             <ShoppingBag className="h-4 w-4 text-muted-foreground" />
@@ -136,7 +136,7 @@ export function DashboardContent({ stats, chartData }: DashboardContentProps) {
             <div className="text-2xl font-bold">{stats.totalOrders}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="border-muted-foreground/10 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Pedidos Pendientes</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
@@ -145,7 +145,7 @@ export function DashboardContent({ stats, chartData }: DashboardContentProps) {
             <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{stats.pendingOrders}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="border-muted-foreground/10 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Entregados</CardTitle>
             <CheckCircle className="h-4 w-4 text-muted-foreground" />
@@ -154,7 +154,7 @@ export function DashboardContent({ stats, chartData }: DashboardContentProps) {
             <div className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.deliveredOrders}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="border-muted-foreground/10 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Ventas del Mes</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
@@ -163,7 +163,7 @@ export function DashboardContent({ stats, chartData }: DashboardContentProps) {
             <div className="text-2xl font-bold">{formatCurrency(stats.monthSales)}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="border-muted-foreground/10 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Ganancias del Mes</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
@@ -174,7 +174,7 @@ export function DashboardContent({ stats, chartData }: DashboardContentProps) {
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="border-muted-foreground/10 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Clientes</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
@@ -186,7 +186,7 @@ export function DashboardContent({ stats, chartData }: DashboardContentProps) {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        <Card className="col-span-1">
+        <Card className="col-span-1 border-muted-foreground/10 shadow-sm">
           <CardHeader>
             <CardTitle className="text-lg">Ventas Mensuales</CardTitle>
           </CardHeader>
@@ -212,7 +212,7 @@ export function DashboardContent({ stats, chartData }: DashboardContentProps) {
           </CardContent>
         </Card>
 
-        <Card className="col-span-1">
+        <Card className="col-span-1 border-muted-foreground/10 shadow-sm">
           <CardHeader>
             <CardTitle className="text-lg">Ganancias Mensuales</CardTitle>
           </CardHeader>
@@ -244,7 +244,7 @@ export function DashboardContent({ stats, chartData }: DashboardContentProps) {
           </CardContent>
         </Card>
 
-        <Card className="col-span-1">
+        <Card className="col-span-1 border-muted-foreground/10 shadow-sm">
           <CardHeader>
             <CardTitle className="text-lg">Pedidos por Estado</CardTitle>
           </CardHeader>
@@ -284,7 +284,7 @@ export function DashboardContent({ stats, chartData }: DashboardContentProps) {
           </CardContent>
         </Card>
 
-        <Card className="col-span-1">
+        <Card className="col-span-1 border-muted-foreground/10 shadow-sm">
           <CardHeader>
             <CardTitle className="text-lg">Marcas Más Vendidas</CardTitle>
           </CardHeader>

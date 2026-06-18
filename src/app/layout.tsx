@@ -19,6 +19,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Zapas Import - Sistema de Gestión",
   description: "Sistema de gestión de pedidos de zapatillas importadas",
+  icons: {
+    icon: "/img/Icono.webp",
+  },
 }
 
 export default function RootLayout({

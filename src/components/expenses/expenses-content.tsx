@@ -90,31 +90,40 @@ export function ExpensesContent({ expenses }: Props) {
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          {/* Vista escritorio (Tabla) */}
+          <div className="overflow-x-auto hidden md:block">
+            <table className="w-full text-sm">
               <thead>
-                <tr className="border-b">
-                  <th className="text-left p-4 text-sm font-medium text-muted-foreground">Descripción</th>
-                  <th className="text-left p-4 text-sm font-medium text-muted-foreground">Categoría</th>
-                  <th className="text-right p-4 text-sm font-medium text-muted-foreground">Monto</th>
-                  <th className="text-left p-4 text-sm font-medium text-muted-foreground">Proveedor</th>
-                  <th className="text-left p-4 text-sm font-medium text-muted-foreground">Registró</th>
-                  <th className="text-left p-4 text-sm font-medium text-muted-foreground">Fecha</th>
-                  <th className="text-right p-4 text-sm font-medium text-muted-foreground">Acciones</th>
+                <tr className="border-b bg-muted/30">
+                  <th className="text-left p-4 font-medium text-muted-foreground text-xs uppercase tracking-wider">Descripción</th>
+                  <th className="text-left p-4 font-medium text-muted-foreground text-xs uppercase tracking-wider">Categoría</th>
+                  <th className="text-right p-4 font-medium text-muted-foreground text-xs uppercase tracking-wider">Monto</th>
+                  <th className="text-left p-4 font-medium text-muted-foreground text-xs uppercase tracking-wider">Proveedor</th>
+                  <th className="text-left p-4 font-medium text-muted-foreground text-xs uppercase tracking-wider">Registró</th>
+                  <th className="text-left p-4 font-medium text-muted-foreground text-xs uppercase tracking-wider">Fecha</th>
+                  <th className="text-right p-4 font-medium text-muted-foreground text-xs uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 {expenses.length === 0 ? (
-                  <tr><td colSpan={7} className="text-center p-8 text-muted-foreground">No hay gastos</td></tr>
+                  <tr>
+                    <td colSpan={7} className="text-center p-8 text-muted-foreground">
+                      No hay gastos registrados
+                    </td>
+                  </tr>
                 ) : (
                   expenses.map((e) => (
-                    <tr key={e.id} className="border-b hover:bg-muted/50">
-                      <td className="p-4 font-medium">{e.description}</td>
-                      <td className="p-4"><Badge variant="secondary">{CATEGORY_LABELS[e.category] || e.category}</Badge></td>
-                      <td className="p-4 text-right font-bold">{formatCurrency(e.amount)}</td>
-                      <td className="p-4 text-sm">{e.supplier?.name || "-"}</td>
-                      <td className="p-4 text-sm text-muted-foreground">{e.creator.name}</td>
-                      <td className="p-4 text-sm text-muted-foreground">{formatDate(e.date)}</td>
+                    <tr key={e.id} className="border-b last:border-0 hover:bg-muted/40 transition-colors">
+                      <td className="p-4 font-semibold text-foreground">{e.description}</td>
+                      <td className="p-4">
+                        <Badge variant="secondary" className="font-semibold">
+                          {CATEGORY_LABELS[e.category] || e.category}
+                        </Badge>
+                      </td>
+                      <td className="p-4 text-right font-bold text-foreground">{formatCurrency(e.amount)}</td>
+                      <td className="p-4 text-foreground font-medium">{e.supplier?.name || "-"}</td>
+                      <td className="p-4 text-muted-foreground">{e.creator.name}</td>
+                      <td className="p-4 text-muted-foreground text-xs">{formatDate(e.date)}</td>
                       <td className="p-4 text-right">
                         {isAdmin && (
                           <Button variant="ghost" size="icon" onClick={() => handleDelete(e.id)}>
@@ -127,6 +136,67 @@ export function ExpensesContent({ expenses }: Props) {
                 )}
               </tbody>
             </table>
+          </div>
+
+          {/* Vista móvil (Tarjetas) */}
+          <div className="grid gap-4 md:hidden p-4 bg-muted/10">
+            {expenses.length === 0 ? (
+              <p className="text-center text-muted-foreground py-8">No hay gastos registrados</p>
+            ) : (
+              expenses.map((e) => (
+                <div
+                  key={e.id}
+                  className="border border-muted-foreground/10 rounded-xl p-4 space-y-3 bg-card shadow-sm hover:shadow-md transition-shadow relative"
+                >
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <span className="font-bold text-foreground text-sm block">{e.description}</span>
+                      <span className="text-[10px] text-muted-foreground mt-0.5 block">{formatDate(e.date)}</span>
+                    </div>
+                    <Badge variant="secondary" className="font-bold text-[10px] px-2 py-0.5">
+                      {CATEGORY_LABELS[e.category] || e.category}
+                    </Badge>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 text-xs border-y py-2 border-muted-foreground/5">
+                    <div>
+                      <span className="text-muted-foreground block text-[10px]">Proveedor</span>
+                      <span className="font-semibold text-foreground mt-0.5 block">{e.supplier?.name || "-"}</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground block text-[10px]">Registró</span>
+                      <span className="font-semibold text-foreground mt-0.5 block">{e.creator.name}</span>
+                    </div>
+                    {e.order && (
+                      <div className="col-span-2">
+                        <span className="text-muted-foreground block text-[10px]">Pedido Relacionado</span>
+                        <span className="font-semibold text-foreground mt-0.5 block">
+                          #{e.order.orderNumber} - {e.order.model}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex justify-between items-center text-xs pt-1">
+                    <div>
+                      <span className="text-muted-foreground block text-[10px] uppercase">Monto</span>
+                      <span className="font-bold text-sm text-destructive">{formatCurrency(e.amount)}</span>
+                    </div>
+                    {isAdmin && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 text-xs gap-1 text-destructive hover:bg-destructive/10 animate-fade-in"
+                        onClick={() => handleDelete(e.id)}
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                        Eliminar
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </CardContent>
       </Card>

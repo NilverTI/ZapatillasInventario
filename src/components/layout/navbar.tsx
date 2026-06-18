@@ -49,8 +49,8 @@ export function Navbar() {
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0">
               <div className="flex flex-col h-full">
-                <div className="flex items-center h-16 px-6 border-b">
-                  <Package className="h-6 w-6 text-primary mr-2" />
+                <div className="flex items-center h-16 px-6 border-b gap-2">
+                  <img src="/img/Icono.webp" alt="Zapas Import Logo" className="h-8 w-8 object-contain rounded-md" />
                   <span className="font-bold text-lg">Zapas Import</span>
                 </div>
                 <nav className="flex-1 px-3 py-4 space-y-1">
@@ -114,7 +114,7 @@ export function Navbar() {
               </div>
             </SheetContent>
           </Sheet>
-          <Package className="h-5 w-5 text-primary" />
+          <img src="/img/Icono.webp" alt="Zapas Import Logo" className="h-6 w-6 object-contain rounded-md" />
           <span className="font-bold">Zapas Import</span>
         </div>
         <div className="flex items-center gap-2">

@@ -18,7 +18,7 @@ export default async function AppLayout({
       <Sidebar />
       <Navbar />
       <main className="md:pl-64 pt-16 md:pt-0">
-        <div className="p-4 md:p-6 lg:p-8">{children}</div>
+        <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto w-full">{children}</div>
       </main>
     </div>
   )

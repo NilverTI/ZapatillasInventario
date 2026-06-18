@@ -96,44 +96,52 @@ export function ProductForm({ product }: Props) {
   }
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="space-y-6 max-w-3xl mx-auto w-full">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" asChild><Link href="/products"><ArrowLeft className="h-4 w-4" /></Link></Button>
+        <Button variant="ghost" size="icon" asChild>
+          <Link href="/products">
+            <ArrowLeft className="h-4 w-4" />
+          </Link>
+        </Button>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">{isEditing ? "Editar Producto" : "Nuevo Producto"}</h1>
+          <h1 className="text-2xl font-bold tracking-tight">
+            {isEditing ? "Editar Producto" : "Nuevo Producto"}
+          </h1>
         </div>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Card>
-          <CardHeader><CardTitle>Información del Producto</CardTitle></CardHeader>
+        <Card className="border-muted-foreground/10 shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold">Información del Producto</CardTitle>
+          </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="model">Modelo *</Label>
-                <Input id="model" {...register("model")} />
+                <Label htmlFor="model" className="text-sm font-medium">Modelo *</Label>
+                <Input id="model" {...register("model")} className="border-muted-foreground/20 focus-visible:ring-primary" />
                 {errors.model && <p className="text-sm text-destructive">{errors.model.message}</p>}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="brand">Marca *</Label>
-                <Input id="brand" {...register("brand")} />
+                <Label htmlFor="brand" className="text-sm font-medium">Marca *</Label>
+                <Input id="brand" {...register("brand")} className="border-muted-foreground/20 focus-visible:ring-primary" />
                 {errors.brand && <p className="text-sm text-destructive">{errors.brand.message}</p>}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="category">Categoría</Label>
-                <Select id="category" options={CATEGORIES} {...register("category")} />
+                <Label htmlFor="category" className="text-sm font-medium">Categoría</Label>
+                <Select id="category" options={CATEGORIES} {...register("category")} className="border-muted-foreground/20 focus-visible:ring-primary" />
               </div>
               <div className="space-y-2 sm:col-span-2">
-                <Label htmlFor="description">Descripción</Label>
-                <Input id="description" {...register("description")} />
+                <Label htmlFor="description" className="text-sm font-medium">Descripción</Label>
+                <Input id="description" {...register("description")} className="border-muted-foreground/20 focus-visible:ring-primary" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         {isEditing && (
-          <Card className="mt-6">
+          <Card className="mt-6 border-muted-foreground/10 shadow-sm">
             <CardHeader>
-              <CardTitle className="flex items-center justify-between">
+              <CardTitle className="flex items-center justify-between text-lg font-semibold">
                 Variantes / Stock
                 <Button type="button" variant="outline" size="sm" onClick={handleAddVariant}>
                   <Plus className="h-4 w-4 mr-1" /> Agregar Variante
@@ -146,12 +154,12 @@ export function ProductForm({ product }: Props) {
               ) : (
                 <div className="space-y-2">
                   {variants.map((v) => (
-                    <div key={v.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div key={v.id} className="flex items-center justify-between p-3 border border-muted-foreground/10 rounded-lg hover:bg-muted/30 transition-colors">
                       <div className="text-sm">
-                        <span className="font-medium">{v.size || "Talla única"}</span>
+                        <span className="font-semibold text-foreground">{v.size || "Talla única"}</span>
                         {v.color && <span className="text-muted-foreground ml-2">({v.color})</span>}
-                        <span className="ml-3 text-muted-foreground">Stock: {v.stock}</span>
-                        {v.price && <span className="ml-3 text-muted-foreground">Precio: S/ {Number(v.price).toFixed(2)}</span>}
+                        <span className="ml-3 text-muted-foreground">Stock: <span className="font-medium text-foreground">{v.stock}</span></span>
+                        {v.price && <span className="ml-3 text-muted-foreground">Precio: <span className="font-medium text-foreground">S/ {Number(v.price).toFixed(2)}</span></span>}
                       </div>
                       <Button variant="ghost" size="icon" onClick={() => handleRemoveVariant(v.id)}>
                         <Trash2 className="h-4 w-4 text-destructive" />

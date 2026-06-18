@@ -73,7 +73,7 @@ export function ClientForm({ client }: Props) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-3xl mx-auto w-full space-y-6">
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="icon" asChild>
           <Link href="/clients">
@@ -91,53 +91,53 @@ export function ClientForm({ client }: Props) {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Card>
+        <Card className="border-muted-foreground/10 shadow-sm">
           <CardHeader>
-            <CardTitle>Información del Cliente</CardTitle>
+            <CardTitle className="text-lg font-semibold">Información del Cliente</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="fullName">Nombre Completo *</Label>
-                <Input id="fullName" {...register("fullName")} />
+                <Label htmlFor="fullName" className="text-sm font-medium">Nombre Completo *</Label>
+                <Input id="fullName" {...register("fullName")} className="border-muted-foreground/20 focus-visible:ring-primary" />
                 {errors.fullName && (
                   <p className="text-sm text-destructive">{errors.fullName.message}</p>
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="dni">DNI</Label>
-                <Input id="dni" {...register("dni")} />
+                <Label htmlFor="dni" className="text-sm font-medium">DNI</Label>
+                <Input id="dni" {...register("dni")} className="border-muted-foreground/20 focus-visible:ring-primary" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="phone">Celular *</Label>
-                <Input id="phone" {...register("phone")} />
+                <Label htmlFor="phone" className="text-sm font-medium">Celular *</Label>
+                <Input id="phone" {...register("phone")} className="border-muted-foreground/20 focus-visible:ring-primary" />
                 {errors.phone && (
                   <p className="text-sm text-destructive">{errors.phone.message}</p>
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="whatsapp">WhatsApp</Label>
-                <Input id="whatsapp" {...register("whatsapp")} />
+                <Label htmlFor="whatsapp" className="text-sm font-medium">WhatsApp</Label>
+                <Input id="whatsapp" {...register("whatsapp")} className="border-muted-foreground/20 focus-visible:ring-primary" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Correo Electrónico</Label>
-                <Input id="email" type="email" {...register("email")} />
+                <Label htmlFor="email" className="text-sm font-medium">Correo Electrónico</Label>
+                <Input id="email" type="email" {...register("email")} className="border-muted-foreground/20 focus-visible:ring-primary" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="city">Ciudad</Label>
-                <Input id="city" {...register("city")} />
+                <Label htmlFor="city" className="text-sm font-medium">Ciudad</Label>
+                <Input id="city" {...register("city")} className="border-muted-foreground/20 focus-visible:ring-primary" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="country">País</Label>
-                <Input id="country" {...register("country")} />
+                <Label htmlFor="country" className="text-sm font-medium">País</Label>
+                <Input id="country" {...register("country")} className="border-muted-foreground/20 focus-visible:ring-primary" />
               </div>
               <div className="space-y-2 sm:col-span-2">
-                <Label htmlFor="address">Dirección</Label>
-                <Input id="address" {...register("address")} />
+                <Label htmlFor="address" className="text-sm font-medium">Dirección</Label>
+                <Input id="address" {...register("address")} className="border-muted-foreground/20 focus-visible:ring-primary" />
               </div>
               <div className="space-y-2 sm:col-span-2">
-                <Label htmlFor="notes">Observaciones</Label>
-                <Input id="notes" {...register("notes")} />
+                <Label htmlFor="notes" className="text-sm font-medium">Observaciones</Label>
+                <Input id="notes" {...register("notes")} className="border-muted-foreground/20 focus-visible:ring-primary" />
               </div>
             </div>
           </CardContent>
